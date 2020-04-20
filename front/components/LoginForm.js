@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { Input, Button, Form } from 'antd';
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux';
+import { LOG_IN_REQUEST } from '../reducer/user'
 function LoginForm() {
 
   const useInput = (initState = null) => {
@@ -13,8 +15,15 @@ function LoginForm() {
 
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const onSubmitForm = useCallback((e) => {
-    console.log('erer');
+  const { isLoggingIn } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const onSubmitForm = useCallback(() => {
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        id, password,
+      },
+    });
   }, [id, password]);
 
   return (
@@ -31,7 +40,7 @@ function LoginForm() {
               <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
             </div>
             <div style={{ marginTop: '10px'}}>
-              <Button type="primary" htmlType="submit">Login</Button>
+              <Button type="primary" htmlType="submit" loading={isLoggingIn}>Login</Button>
               <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </div>
           </Form>

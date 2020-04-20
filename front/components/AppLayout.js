@@ -1,20 +1,13 @@
 import React from 'react';
-import { Menu, Input, Row, Col, Card ,Avatar } from 'antd';
-
+import { Menu, Input, Row, Col } from 'antd';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile'
 
-const dummy = {
-  nickname: '준호',
-  Post: [],
-  Following: [],
-  Follower: [],
-  isLoggedIn: false,
-}
 const AppLayout = ({ children }) => {
-
+  const { isLoggedIn } = useSelector(state => state.user);
 
   return (
     <div>
@@ -27,7 +20,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={10} > {/* Col간의 간격*/} 
         <Col xs={24} md={6}>
-          {dummy.isLoggedIn 
+          {isLoggedIn 
           ? <UserProfile />
           : 
           <LoginForm  />
