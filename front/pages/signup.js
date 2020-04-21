@@ -50,12 +50,12 @@ const Signup = () => {
     dispatch({
       type: SIGN_UP_REQUEST,
       data: {
-        id,
+        userId: id,
         password,
         nickname
       }
     })
-  }, [password, passwordCheck, term]);
+  }, [id, nickname, password, passwordCheck, term]);
 
   const onChangePasswordCheck = useCallback((e) => {
     setPasswordError(e.target.value != password);

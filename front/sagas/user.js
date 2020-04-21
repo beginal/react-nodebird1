@@ -8,8 +8,8 @@ function* loginAPI() {
 
 }
 
-function* signUpAPI() {
-  return axios.post('/signup')
+function* signUpAPI(signUpData) {
+  return axios.post('http://localhost:3065/api/user/', signUpData)
 }
 
 function* login() {
@@ -27,10 +27,10 @@ function* login() {
   }
 }
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // yield call(signUpAPI);
-    yield delay(2000);
+    // yield call(signUpAPI)
+    yield call(signUpAPI, action.data);
     yield put({
       type: SIGN_UP_SUCCESS,
     })
