@@ -18,15 +18,6 @@ export const initialState = {
   commentAdded: false,
 };
 
-const dummyComment = {
-  id: 1,
-  User: {
-    id: 1,
-    nickname: '제로초',
-  },
-  createdAt: new Date(),
-  content: '더미 댓글입니다.',
-};
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
 export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
@@ -110,7 +101,7 @@ export default (state = initialState, action) => {
     case ADD_COMMENT_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
       const post = state.mainPosts[postIndex];
-      const Comments = [...post.Comments, dummyComment];
+      const Comments = [...post.Comments, action.data.comment];
       const mainPosts = [...state.mainPosts];
       mainPosts[postIndex] = { ...post, Comments };
       return {
@@ -127,18 +118,24 @@ export default (state = initialState, action) => {
         addCommentErrorReason: action.error,
       };
     }
+    case LOAD_MAIN_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_MAIN_POSTS_REQUEST: {
       return {
         ...state,
         mainPosts: [],
       };
     }
+    case LOAD_MAIN_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
     case LOAD_MAIN_POSTS_SUCCESS: {
       return {
         ...state,
         mainPosts: action.data,
       };
     }
+    case LOAD_MAIN_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_MAIN_POSTS_FAILURE: {
       return {
         ...state,
