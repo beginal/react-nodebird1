@@ -111,10 +111,16 @@ export default (state = initialState, action) => {
       };
     }
     case LOAD_USER_SUCCESS: {
-      return {
+      if(action.me) {
+        return {
         ...state,
         me: action.data,
       };
+      }
+      return {
+        ...state,
+        userInfo: action.data,
+      }      
     }
     case LOAD_USER_FAILURE: {
       return {

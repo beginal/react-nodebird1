@@ -17,7 +17,7 @@ app.prepare().then((() => {
 
   server.use(morgan('dev'));
   server.use(express.json())
-  server.use(express.urlencoded({ extended: true}));
+  server.use(express.urlencoded({ extended: true }));
   server.use(cookieParser(process.env.COOKIE_SECRET));
   server.use(expressSession({
     resave: false,
