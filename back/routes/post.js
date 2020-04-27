@@ -1,9 +1,26 @@
 const express = require('express');
 const db = require('../models');
+const path = require('path')
 const { isLoggedIn } = require('./middleware');
+const multer = require('multer')
+
 const router = express.Router();
 
-router.post('/', isLoggedIn,  async (req, res, next) => { // POST /api/post
+const upload = multer({
+  storage:  multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, 'uploads');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname)
+      const basename = path.basename(file.originalname, ext);
+      cb(null, basename + new Date().valueOf() + ext);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024},
+})
+
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /api/post
   try {
     const hashtags = req.body.content.match(/#[^\s]+/g);
     const newPost = await db.Post.create({
@@ -33,8 +50,10 @@ router.post('/', isLoggedIn,  async (req, res, next) => { // POST /api/post
   }
 });
 
-router.post('/images', (req, res) => {
 
+router.post('/images', upload.array('image'),(req, res) => {
+  console.log(req.filse);
+  res.json(req.files.map(v => v.filename))
 });
 
 router.get('/:id/comments', isLoggedIn, async (req, res, next) => {
